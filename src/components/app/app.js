@@ -13,46 +13,29 @@ export default class App extends Component {
   _swapiService = new SwapiService();
   _maxId = 0;
 
-  updatePlanet = async () => {
+  updateRandom = async () => {
     const id = Math.floor(Math.random() * 5 + 2);
-    const planet = await this._swapiService.getPlanet(id);
+    await this._swapiService.getPlanet(id)
+      .then((random) => this._onRandomLoaded(random));
+  }
 
+  _onRandomLoaded = (random) => {
     this.setState({
-      random: {
-        header: planet.name,
-        img: `https://starwars-visualguide.com/assets/img/planets/${id}.jpg`,
-        data: [
-          this.createDetail('Population', planet.population),
-          this.createDetail('Rotation Period', planet.rotation_period),
-          this.createDetail('Diameter', planet.diameter),
-        ],
-      }
+      random,
     })
   }
 
   state = {
-    random: {
-      header: 'Random Block',
-      img: '',
-      data: [],
-    }
+    random: {}
   }
 
   constructor() {
     super();
-    this.updatePlanet();
-  }
-
-  createDetail(label, value) {
-    return {
-      label,
-      value,
-      key: this._maxId++
-    }
+    this.updateRandom();
   }
 
   render() {
-    const { random: { header, img, data }} = this.state;
+    const { random } = this.state;
 
     return (
       <main>
@@ -63,7 +46,7 @@ export default class App extends Component {
 
           <div className="row mb-5">
             <div className="col">
-              <Details header={ header } img={ img } data={ data } />
+              <Details data={ random } />
             </div>
           </div>
 

@@ -2,12 +2,13 @@ import React from 'react';
 
 import './details.css';
 
-const Details = ({ header, img, data = [] }) => {
+const Details = ({ data = {} }) => {
+  const { header, img, details = [] } = data;
   return (
     <div className="card bg-light border-secondary shadow">
       <div className="row">
         <div className="col-md-4">
-          <img src={ img } alt={ header } height="100%" width="100%" className="card-img" />
+          <img src={ img } alt={ header } width="100%" className="card-img" />
         </div>
         <div className="col-md-8">
           <div className="card-body">
@@ -18,7 +19,7 @@ const Details = ({ header, img, data = [] }) => {
 
             <ul className="list-group list-group-flush">
               {
-                data.map(({ label, value, key }) => {
+                details.map(({ label, value, key }) => {
                   return (
                     <li key={ key } className="list-group-item bg-light">
                       <span className="font-weight-bold mr-2">{label}:</span>
