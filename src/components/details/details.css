@@ -1,0 +1,10 @@
+.c-details-close {
+  position: absolute;
+  right: 4px;
+  top: 0;
+  z-index: 1;
+}
+
+.c-details-close:focus {
+  outline: none;
+}

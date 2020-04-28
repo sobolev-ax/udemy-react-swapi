@@ -21,6 +21,9 @@ export default class App extends Component {
   }
 
   _onRandomLoaded = (data) => {
+
+    console.log('App:', '_onRandomLoaded');
+
     this.setState({
       random: {
         data,
@@ -46,22 +49,39 @@ export default class App extends Component {
       loading: true,
       error: false,
     },
+    randomInterval: 0,
+    randomVisible: false,
   }
 
-  constructor() {
-    super();
-
+  componentDidMount() {
     this.startRandomPlanet();
   }
 
   startRandomPlanet = () => {
     this._updateRandom();
 
-    setInterval(this._updateRandom, 5000);
+    this.setState({
+      randomInterval: setInterval(this._updateRandom, 5000),
+      randomVisible: true,
+    })
+  }
+
+  stopRandomPlanet = () => {
+    this.setState({
+      random: {
+        loading: true,
+        error: false,
+      },
+      randomVisible: false,
+    });
+
+    clearInterval(this.state.randomInterval);
   }
 
   render() {
-    const { random } = this.state;
+    const { random, randomVisible } = this.state;
+
+    const _randomBlock = randomVisible ? randomBlock(random, this.stopRandomPlanet) : null;
 
     return (
       <main>
@@ -70,11 +90,7 @@ export default class App extends Component {
 
         <div className="container">
 
-          <div className="row mb-5">
-            <div className="col">
-              <Details { ...random } />
-            </div>
-          </div>
+          { _randomBlock }
 
           <div className="row">
             <div className="col-lg-6 mb-3 mb-lg-0">
@@ -89,4 +105,14 @@ export default class App extends Component {
       </main>
     )
   }
+}
+
+const randomBlock = (random, onClose) => {
+  return (
+    <div className="row mb-5">
+      <div className="col">
+        <Details { ...random } onClose={ onClose } />
+      </div>
+    </div>
+  )
 }

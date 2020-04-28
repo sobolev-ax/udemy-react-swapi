@@ -5,18 +5,30 @@ import ErrorIndicator from '../error-indicator';
 
 import './details.css';
 
-const Details = ({ data = {}, loading = false, error = false }) => {
-  
+const Details = ({ data = {}, loading = false, error = false, onClose = false }) => {
+
+  const close = onClose ? closeBtn(onClose) : null;
   const content = !(loading || error) ? details(data) : null;
   const spinner = loading ? <Spinner /> : null;
   const indicator = error ? <ErrorIndicator /> : null;
 
   return (
     <div className="card bg-light border-secondary shadow">
+      { close }
       { indicator }
       { spinner }
       { content }
     </div>
+  )
+}
+
+export default Details;
+
+const closeBtn = (close) => {
+  return (
+    <button onClick={ close } type="button" className="close c-details-close" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
   )
 }
 
@@ -51,5 +63,3 @@ const details = ({ header, img, details = [] }) => {
     </div>
   )
 }
-
-export default Details;
