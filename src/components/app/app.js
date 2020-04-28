@@ -22,11 +22,13 @@ export default class App extends Component {
   _onRandomLoaded = (random) => {
     this.setState({
       random,
+      randomLoading: false,
     })
   }
 
   state = {
-    random: {}
+    random: {},
+    randomLoading: true,
   }
 
   constructor() {
@@ -35,7 +37,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { random } = this.state;
+    const { random, randomLoading } = this.state;
 
     return (
       <main>
@@ -46,7 +48,7 @@ export default class App extends Component {
 
           <div className="row mb-5">
             <div className="col">
-              <Details data={ random } />
+              <Details data={ random } loading={ randomLoading } />
             </div>
           </div>
 
