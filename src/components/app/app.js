@@ -16,19 +16,36 @@ export default class App extends Component {
   updateRandom = async () => {
     const id = Math.floor(Math.random() * 5 + 2);
     await this._swapiService.getPlanet(id)
-      .then((random) => this._onRandomLoaded(random));
+      .then((random) => this._onRandomLoaded(random))
+      .catch(this._onRandomError);
   }
 
-  _onRandomLoaded = (random) => {
+  _onRandomLoaded = (data) => {
     this.setState({
-      random,
-      randomLoading: false,
+      random: {
+        data,
+        loading: false,
+        error: false,
+      },
+    })
+  }
+
+  _onRandomError = () => {
+    this.setState({
+      random: {
+        data: {},
+        loading: false,
+        error: true,
+      },
     })
   }
 
   state = {
-    random: {},
-    randomLoading: true,
+    random: {
+      data: {},
+      loading: true,
+      error: false,
+    },
   }
 
   constructor() {
@@ -37,7 +54,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { random, randomLoading } = this.state;
+    const { random } = this.state;
 
     return (
       <main>
@@ -48,7 +65,7 @@ export default class App extends Component {
 
           <div className="row mb-5">
             <div className="col">
-              <Details data={ random } loading={ randomLoading } />
+              <Details { ...random } />
             </div>
           </div>
 
