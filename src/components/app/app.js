@@ -13,7 +13,7 @@ export default class App extends Component {
   _swapiService = new SwapiService();
   _maxId = 0;
 
-  updateRandom = async () => {
+  _updateRandom = async () => {
     const id = Math.floor(Math.random() * 5 + 2);
     await this._swapiService.getPlanet(id)
       .then((random) => this._onRandomLoaded(random))
@@ -50,7 +50,14 @@ export default class App extends Component {
 
   constructor() {
     super();
-    this.updateRandom();
+
+    this.startRandomPlanet();
+  }
+
+  startRandomPlanet = () => {
+    this._updateRandom();
+
+    setInterval(this._updateRandom, 5000);
   }
 
   render() {
