@@ -26,16 +26,17 @@ export default class App extends Component {
       .catch(() => this._onError('list'));
   }
 
-  _updateSelectedPerson = async (id) => {
+  _updateSelectedPerson = async () => {
+    const { selectedId } = this.state;
+
     this.setState({
       selected: {
         loading: true,
         error: false,
       },
-      selectedId: id,
     });
 
-    await this._swapiService.getPerson(id)
+    await this._swapiService.getPerson(selectedId)
       .then((person) => this._onLoaded('selected', person))
       .catch(() => this._onError('selected'));
   }
@@ -86,7 +87,7 @@ export default class App extends Component {
       loading: true,
       error: false,
     },
-    selectedId: 0,
+    selectedId: null,
   }
 
   componentDidMount() {
@@ -96,6 +97,12 @@ export default class App extends Component {
     this.changeSelectedPerson(FIRST_PERSON_ID);
 
     this._updateListPerson();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.selectedId !== this.state.selectedId) {
+      this._updateSelectedPerson();
+    }
   }
 
   startRandomPlanet = () => {
@@ -120,7 +127,9 @@ export default class App extends Component {
   }
 
   changeSelectedPerson = (id) => {
-    this._updateSelectedPerson(id)
+    this.setState({
+      selectedId: id,
+    });
   }
 
   render() {
