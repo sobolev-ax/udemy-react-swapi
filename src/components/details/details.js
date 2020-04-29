@@ -35,8 +35,8 @@ const closeBtn = (close) => {
 const details = ({ header, img, details = [] }) => {
   return (
     <div className="row">
-      <div className="col-md-4">
-        <img src={ img } alt={ header } width="100%" className="card-img" />
+      <div className="col-md-4 col-md-4 d-flex justify-content-center align-items-center">
+        <img src={ img } alt={ header } className="card-img" />
       </div>
       <div className="col-md-8">
         <div className="card-body">

@@ -1,21 +1,48 @@
 import React from 'react';
 
+import classNames from 'classnames';
+
+import Spinner from '../spinner';
+import ErrorIndicator from '../error-indicator';
+
 import './list.css';
 
-const List = () => {
+const List = ({ data = [], loading = false, error = false, onClick = () => {}, selected = 0 }) => {
+  
+  const content = !(loading || error) ? list(data, onClick, selected) : null;
+  const spinner = loading ? <Spinner /> : null;
+  const indicator = error ? <ErrorIndicator /> : null;
+
   return (
     <div className="shadow list-group">
-      <a href="./" className="list-group-item list-group-item-action list-group-item-dark active">
-        Cras justo odio
-      </a>
-      <a href="./" className="list-group-item list-group-item-action list-group-item-dark">Dapibus ac facilisis in</a>
-      <a href="./" className="list-group-item list-group-item-action list-group-item-dark">Morbi leo risus</a>
-      <a href="./" className="list-group-item list-group-item-action list-group-item-dark">Porta ac consectetur ac</a>
-      <a href="./" className="list-group-item list-group-item-action list-group-item-dark">Dapibus ac facilisis in</a>
-      <a href="./" className="list-group-item list-group-item-action list-group-item-dark">Morbi leo risus</a>
-      <a href="./" className="list-group-item list-group-item-action list-group-item-dark">Porta ac consectetur ac</a>
+      { content }
+      { spinner }
+      { indicator }
     </div>
   )
+}
+
+const list = (data, onClick, selected) => {
+  return data.map(({ header, id }) => {
+
+    const cssClasses = classNames(
+      'list-group-item',
+      'list-group-item-action',
+      'list-group-item-dark',
+      'c-item-list',
+      {
+        active: selected === id,
+      }
+    );
+
+    return (
+      <li key={ id }
+        className={ cssClasses }
+        onClick={ () => onClick(id) } >
+        { header }
+      </li>
+    )
+  })
 }
 
 export default List;

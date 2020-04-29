@@ -16,16 +16,36 @@ export default class App extends Component {
   _updateRandom = async () => {
     const id = Math.floor(Math.random() * 5 + 2);
     await this._swapiService.getPlanet(id)
-      .then((random) => this._onRandomLoaded(random))
-      .catch(this._onRandomError);
+      .then((random) => this._onLoaded('random', random))
+      .catch(() => this._onError('random'));
   }
 
-  _onRandomLoaded = (data) => {
+  _updateListPerson = async () => {
+    await this._swapiService.getPeople()
+      .then((list) => this._onLoaded('list', list))
+      .catch(() => this._onError('list'));
+  }
 
-    console.log('App:', '_onRandomLoaded');
+  _updateSelectedPerson = async (id) => {
+    this.setState({
+      selected: {
+        loading: true,
+        error: false,
+      },
+      selectedId: id,
+    });
+
+    await this._swapiService.getPerson(id)
+      .then((person) => this._onLoaded('selected', person))
+      .catch(() => this._onError('selected'));
+  }
+
+  _onLoaded = (label, data) => {
+
+    console.log(`App: ${ label } _onLoaded`);
 
     this.setState({
-      random: {
+      [label]: {
         data,
         loading: false,
         error: false,
@@ -33,9 +53,12 @@ export default class App extends Component {
     })
   }
 
-  _onRandomError = () => {
+  _onError = (label) => {
+
+    console.log(`App: ${ label } _onError`);
+
     this.setState({
-      random: {
+      [label]: {
         data: {},
         loading: false,
         error: true,
@@ -51,10 +74,28 @@ export default class App extends Component {
     },
     randomInterval: 0,
     randomVisible: false,
+
+    list: {
+      data: {},
+      loading: true,
+      error: false,
+    },
+
+    selected: {
+      data: {},
+      loading: true,
+      error: false,
+    },
+    selectedId: 0,
   }
 
   componentDidMount() {
+    const FIRST_PERSON_ID = '1';
+
     this.startRandomPlanet();
+    this.changeSelectedPerson(FIRST_PERSON_ID);
+
+    this._updateListPerson();
   }
 
   startRandomPlanet = () => {
@@ -78,8 +119,12 @@ export default class App extends Component {
     clearInterval(this.state.randomInterval);
   }
 
+  changeSelectedPerson = (id) => {
+    this._updateSelectedPerson(id)
+  }
+
   render() {
-    const { random, randomVisible } = this.state;
+    const { random, randomVisible, list, selected, selectedId } = this.state;
 
     const _randomBlock = randomVisible ? randomBlock(random, this.stopRandomPlanet) : null;
 
@@ -94,10 +139,10 @@ export default class App extends Component {
 
           <div className="row">
             <div className="col-lg-6 mb-3 mb-lg-0">
-              <List />
+              <List { ...list } selected={ selectedId } onClick={ this.changeSelectedPerson } />
             </div>
             <div className="col-lg-6">
-              <Details />
+              <Details { ...selected } />
             </div>
           </div>
 

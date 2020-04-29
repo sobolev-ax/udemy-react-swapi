@@ -69,7 +69,7 @@ export default class SwapiService {
     }
   }
 
-  _transformPlanet(planet) {
+  _transformPlanet = (planet) => {
     const id = this._getId(planet);
 
     return {
@@ -86,7 +86,7 @@ export default class SwapiService {
     }
   }
 
-  _transformPerson(person) {
+  _transformPerson = (person) => {
     const id = this._getId(person);
 
     return {
@@ -103,7 +103,7 @@ export default class SwapiService {
     }
   }
 
-  _transformStarship(starship) {
+  _transformStarship = (starship) => {
     const id = this._getId(starship);
 
     return {
