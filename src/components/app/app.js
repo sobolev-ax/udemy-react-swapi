@@ -148,7 +148,10 @@ export default class App extends Component {
 
           <div className="row">
             <div className="col-lg-6 mb-3 mb-lg-0">
-              <List { ...list } selected={ selectedId } onClick={ this.changeSelectedPerson } />
+              <List { ...list }
+                selected={ selectedId }
+                onClick={ this.changeSelectedPerson }
+                render={(item) => (<span className="font-weight-bold">${item.header}</span>)} />
             </div>
             <div className="col-lg-6">
               <Details { ...selected } />
