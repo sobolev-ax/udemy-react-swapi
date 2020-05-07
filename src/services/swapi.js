@@ -1,35 +1,35 @@
 export default class SwapiService {
-  async getPeople() {
+  getPeople = async () => {
     const people = await this._getResource('people');
 
     return people.results.map(this._transformPerson);
   }
 
-  async getPerson(id) {
+  getPerson = async (id) => {
     const person = await this._getResource(`people/${id}`);
 
     return this._transformPerson(person);
   }
 
-  async getPlanets() {
+  getPlanets = async () => {
     const people = await this._getResource('planets');
 
     return people.results.map(this._transformPlanet);
   }
 
-  async getPlanet(id) {
+  getPlanet = async (id) => {
     const planet = await this._getResource(`planets/${id}`);
 
     return this._transformPlanet(planet);
   }
 
-  async getStarships() {
+  getStarships = async () => {
     const people = await this._getResource('starships');
 
     return people.results.map(this._transformStarship);
   }
 
-  async getStarship(id) {
+  getStarship = async (id) => {
     const starship = await this._getResource(`starships/${id}`);
 
     return this._transformStarship(starship);
@@ -41,7 +41,7 @@ export default class SwapiService {
   _id = 0;
 
 
-  async _getResource(url) {
+  _getResource = async (url) => {
     const fullUrl = `${this._apiBase}/${url}`;
     const res = await fetch(fullUrl);
 
@@ -55,13 +55,13 @@ export default class SwapiService {
     return body;
   }
 
-  _getId(item) {
+  _getId = (item) => {
     const regExp = /\/([0-9]*)\/$/;
 
     return item.url.match(regExp)[1];
   }
 
-  _createDetail(label, value) {
+  _createDetail = (label, value) => {
     return {
       label,
       value,
