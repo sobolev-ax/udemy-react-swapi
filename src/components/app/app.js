@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Header from '../header';
 import List from '../list';
 import Details from '../details';
+import Row from '../row';
 
 import SwapiService from '../../services/swapi';
 
@@ -137,6 +138,13 @@ export default class App extends Component {
 
     const _randomBlock = randomVisible ? randomBlock(random, this.stopRandomPlanet) : null;
 
+    const listEl = <List { ...list }
+      selected={ selectedId }
+      onClick={ this.changeSelectedPerson }
+      render={(item) => (<span className="font-weight-bold">${item.header}</span>)} />;
+
+    const detailsEl = <Details { ...selected } />;
+
     return (
       <main>
 
@@ -146,17 +154,7 @@ export default class App extends Component {
 
           { _randomBlock }
 
-          <div className="row">
-            <div className="col-lg-6 mb-3 mb-lg-0">
-              <List { ...list }
-                selected={ selectedId }
-                onClick={ this.changeSelectedPerson }
-                render={(item) => (<span className="font-weight-bold">${item.header}</span>)} />
-            </div>
-            <div className="col-lg-6">
-              <Details { ...selected } />
-            </div>
-          </div>
+          <Row left={ listEl } right={ detailsEl } />
 
         </div>
       </main>
