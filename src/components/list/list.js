@@ -3,21 +3,19 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Spinner from '../spinner';
-import ErrorIndicator from '../error-indicator';
 
 import './list.css';
 
-const List = ({ data = [], loading = false, error = false, onClick = () => {}, selected = 0, render = false }) => {
-  
-  const content = !(loading || error) ? list(data, onClick, selected, render) : null;
+const List = ({ data = [], loading = false, onClick = () => {}, selected = 0, children = false }) => {
+
+  const render = children;
+  const content = !loading ? list(data, onClick, selected, render) : null;
   const spinner = loading ? <Spinner /> : null;
-  const indicator = error ? <ErrorIndicator /> : null;
 
   return (
     <div className="shadow list-group">
       { content }
       { spinner }
-      { indicator }
     </div>
   )
 }

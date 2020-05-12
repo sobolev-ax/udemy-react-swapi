@@ -1,21 +1,18 @@
 import React from 'react';
 
 import Spinner from '../spinner';
-import ErrorIndicator from '../error-indicator';
 
 import './details.css';
 
-const Details = ({ data = {}, loading = false, error = false, onClose = false }) => {
+const Details = ({ data = {}, loading = false, onClose = false }) => {
 
   const close = onClose ? closeBtn(onClose) : null;
-  const content = !(loading || error) ? details(data) : null;
+  const content = !loading ? details(data) : null;
   const spinner = loading ? <Spinner /> : null;
-  const indicator = error ? <ErrorIndicator /> : null;
 
   return (
     <div className="card bg-light border-secondary shadow">
       { close }
-      { indicator }
       { spinner }
       { content }
     </div>

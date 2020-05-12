@@ -4,6 +4,7 @@ import Header from '../header';
 import List from '../list';
 import Details from '../details';
 import Row from '../row';
+import ErrorBoundry from '../error-boundry';
 
 import SwapiService from '../../services/swapi';
 
@@ -138,26 +139,35 @@ export default class App extends Component {
 
     const _randomBlock = randomVisible ? randomBlock(random, this.stopRandomPlanet) : null;
 
-    const listEl = <List { ...list }
-      selected={ selectedId }
-      onClick={ this.changeSelectedPerson }
-      render={(item) => (<span className="font-weight-bold">${item.header}</span>)} />;
+    const listEl = (
+      <ErrorBoundry>
+        <List { ...list }
+          selected={ selectedId }
+          onClick={ this.changeSelectedPerson }>
+
+            {(item) => (<span className="font-weight-bold">{item.header}</span>)}
+
+        </List>
+      </ErrorBoundry>
+    );
 
     const detailsEl = <Details { ...selected } />;
 
     return (
-      <main>
+      <ErrorBoundry>
+        <main>
 
-        <Header />
+          <Header />
 
-        <div className="container">
+          <div className="container">
 
-          { _randomBlock }
+            { _randomBlock }
 
-          <Row left={ listEl } right={ detailsEl } />
+            <Row left={ listEl } right={ detailsEl } />
 
-        </div>
-      </main>
+          </div>
+        </main>
+      </ErrorBoundry>
     )
   }
 }
@@ -166,7 +176,9 @@ const randomBlock = (random, onClose) => {
   return (
     <div className="row mb-5">
       <div className="col">
-        <Details { ...random } onClose={ onClose } />
+        <ErrorBoundry>
+          <Details { ...random } onClose={ onClose } />
+        </ErrorBoundry>
       </div>
     </div>
   )
