@@ -1,185 +1,91 @@
 import React, { Component } from 'react';
 
 import Header from '../header';
-import List from '../list';
-import Details from '../details';
-import Row from '../row';
+import RandomPlanet from '../random-planet';
 import ErrorBoundry from '../error-boundry';
 
-import SwapiService from '../../services/swapi';
+import Row from "../row/row";
+import ItemDetails, { Record } from "../item-details/item-details";
+import SwapiService from "../../services/swapi-service";
+
+import ItemList from '../item-list';
 
 import './app.css';
 
 export default class App extends Component {
 
-  _swapiService = new SwapiService();
-  _maxId = 0;
-
-  _updateRandom = async () => {
-    const id = Math.floor(Math.random() * 5 + 2);
-    await this._swapiService.getPlanet(id)
-      .then((random) => this._onLoaded('random', random))
-      .catch(() => this._onError('random'));
-  }
-
-  _updateListPerson = async () => {
-    await this._swapiService.getPeople()
-      .then((list) => this._onLoaded('list', list))
-      .catch(() => this._onError('list'));
-  }
-
-  _updateSelectedPerson = async () => {
-    const { selectedId } = this.state;
-
-    this.setState({
-      selected: {
-        loading: true,
-        error: false,
-      },
-    });
-
-    await this._swapiService.getPerson(selectedId)
-      .then((person) => this._onLoaded('selected', person))
-      .catch(() => this._onError('selected'));
-  }
-
-  _onLoaded = (label, data) => {
-
-    console.log(`App: ${ label } _onLoaded`);
-
-    this.setState({
-      [label]: {
-        data,
-        loading: false,
-        error: false,
-      },
-    })
-  }
-
-  _onError = (label) => {
-
-    console.log(`App: ${ label } _onError`);
-
-    this.setState({
-      [label]: {
-        data: {},
-        loading: false,
-        error: true,
-      },
-    })
-  }
+  swapiService = new SwapiService();
 
   state = {
-    random: {
-      data: {},
-      loading: true,
-      error: false,
-    },
-    randomInterval: 0,
-    randomVisible: false,
+    showRandomPlanet: true
+  };
 
-    list: {
-      data: {},
-      loading: true,
-      error: false,
-    },
-
-    selected: {
-      data: {},
-      loading: true,
-      error: false,
-    },
-    selectedId: null,
-  }
-
-  componentDidMount() {
-    const FIRST_PERSON_ID = '1';
-
-    this.startRandomPlanet();
-    this.changeSelectedPerson(FIRST_PERSON_ID);
-
-    this._updateListPerson();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.selectedId !== this.state.selectedId) {
-      this._updateSelectedPerson();
-    }
-  }
-
-  startRandomPlanet = () => {
-    this._updateRandom();
-
-    this.setState({
-      randomInterval: setInterval(this._updateRandom, 5000),
-      randomVisible: true,
-    })
-  }
-
-  stopRandomPlanet = () => {
-    this.setState({
-      random: {
-        loading: true,
-        error: false,
-      },
-      randomVisible: false,
+  toggleRandomPlanet = () => {
+    this.setState((state) => {
+      return {
+        showRandomPlanet: !state.showRandomPlanet
+      }
     });
-
-    clearInterval(this.state.randomInterval);
-  }
-
-  changeSelectedPerson = (id) => {
-    this.setState({
-      selectedId: id,
-    });
-  }
+  };
 
   render() {
-    const { random, randomVisible, list, selected, selectedId } = this.state;
 
-    const _randomBlock = randomVisible ? randomBlock(random, this.stopRandomPlanet) : null;
+    const planet = this.state.showRandomPlanet ?
+      <RandomPlanet/> :
+      null;
 
-    const listEl = (
-      <ErrorBoundry>
-        <List { ...list }
-          selected={ selectedId }
-          onClick={ this.changeSelectedPerson }>
+    const { getPerson,
+            getStarship,
+            getPersonImage,
+            getStarshipImage,
+            getAllPeople,
+            getAllPlanets } = this.swapiService;
 
-            {(item) => (<span className="font-weight-bold">{item.header}</span>)}
+    const personDetails = (
+      <ItemDetails
+        itemId={11}
+        getData={getPerson}
+        getImageUrl={getPersonImage} >
 
-        </List>
-      </ErrorBoundry>
+        <Record field="gender" label="Gender" />
+        <Record field="eyeColor" label="Eye Color" />
+
+      </ItemDetails>
     );
 
-    const detailsEl = <Details { ...selected } />;
+    const starshipDetails = (
+      <ItemDetails
+        itemId={5}
+        getData={getStarship}
+        getImageUrl={getStarshipImage}>
+
+        <Record field="model" label="Model" />
+        <Record field="length" label="Length" />
+        <Record field="costInCredits" label="Cost" />
+      </ItemDetails>
+    );
 
     return (
       <ErrorBoundry>
-        <main>
-
+        <div className="stardb-app">
           <Header />
 
-          <div className="container">
+          <ItemList
+            getData={getAllPeople}
+            onItemSelected={() => {}}>
 
-            { _randomBlock }
+            { ({name}) => <span>{name}</span> }
+          </ItemList>
 
-            <Row left={ listEl } right={ detailsEl } />
+          <ItemList
+            getData={getAllPlanets}
+            onItemSelected={() => {}}>
 
-          </div>
-        </main>
+            { ({name}) => <span>{name}</span> }
+          </ItemList>
+
+        </div>
       </ErrorBoundry>
-    )
+    );
   }
-}
-
-const randomBlock = (random, onClose) => {
-  return (
-    <div className="row mb-5">
-      <div className="col">
-        <ErrorBoundry>
-          <Details { ...random } onClose={ onClose } />
-        </ErrorBoundry>
-      </div>
-    </div>
-  )
 }

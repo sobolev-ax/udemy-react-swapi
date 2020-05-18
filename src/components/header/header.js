@@ -4,33 +4,25 @@ import './header.css';
 
 const Header = () => {
   return (
-    <nav className="navbar navbar-expand navbar-dark bg-dark mb-4">
-      <div className="container">
-
-        <a className="navbar-brand" href="./">
-          Star Wars
+    <div className="header d-flex">
+      <h3>
+        <a href="#/">
+          StarDB
         </a>
-
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav">
-
-            <li className="nav-item active">
-              <a className="nav-link" href="./">People</a>
-            </li>
-
-            <li className="nav-item">
-              <a className="nav-link" href="./">Planets</a>
-            </li>
-
-            <li className="nav-item">
-              <a className="nav-link" href="./">Starships</a>
-            </li>
-
-          </ul>
-        </div>
-      </div>
-    </nav>
-  )
-}
+      </h3>
+      <ul className="d-flex">
+        <li>
+          <a href="#/people">People</a>
+        </li>
+        <li>
+          <a href="#/planets">Planets</a>
+        </li>
+        <li>
+          <a href="#/starships">Starships</a>
+        </li>
+      </ul>
+    </div>
+  );
+};
 
 export default Header;
