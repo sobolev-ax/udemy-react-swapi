@@ -43,30 +43,24 @@ export default class App extends Component {
           { planet }
 
           <Row left={
-            <PersonList onItemSelected={() => {}}>
-              { ({name}) => <span>{name}</span> }
-            </PersonList>
+            <PersonList onItemSelected={() => {}} />
           } 
           right={
-            PersonDetails
+            <PersonDetails itemId={1} />
           } />
 
           <Row left={
-            <StarshipList onItemSelected={() => {}}>
-              { ({name}) => <span>{name}</span> }
-            </StarshipList>
+            <StarshipList onItemSelected={() => {}} />
           } 
           right={
-            StarshipDetails
+            <StarshipDetails itemId={5} />
           } />
 
           <Row left={
-            <PlanetList onItemSelected={() => {}}>
-              { ({name}) => <span>{name}</span> }
-            </PlanetList>
+            <PlanetList onItemSelected={() => {}} />
           } 
           right={
-            PlanetDetails
+            <PlanetDetails itemId={7} />
           } />
 
         </div>

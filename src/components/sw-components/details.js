@@ -12,9 +12,9 @@ const {
   getPlanetImage,
 } = new SwapiService();
 
-const PersonDetails = (
+const PersonDetails = (props) => (
   <ItemDetails
-    itemId={11}
+    { ...props }
     getData={getPerson}
     getImageUrl={getPersonImage} >
 
@@ -23,9 +23,9 @@ const PersonDetails = (
 
   </ItemDetails>
 );
-const StarshipDetails = (
+const StarshipDetails = (props) => (
   <ItemDetails
-    itemId={5}
+    { ...props }
     getData={getStarship}
     getImageUrl={getStarshipImage}>
 
@@ -34,9 +34,9 @@ const StarshipDetails = (
     <Record field="costInCredits" label="Cost" />
   </ItemDetails>
 );
-const PlanetDetails = (
+const PlanetDetails = (props) => (
   <ItemDetails
-    itemId={7}
+    { ...props }
     getData={getPlanet}
     getImageUrl={getPlanetImage}>
 
