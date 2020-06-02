@@ -2,9 +2,7 @@ import React from 'react';
 
 import ItemList from '../item-list';
 import { withData } from '../hoc-helpers';
-import SwapiService from '../../services/swapi-service';
-
-const { getAllPeople, getAllStarships, getAllPlanets } = new SwapiService();
+import { withSwapiService } from '../hoc-helpers' 
 
 const withRenderFn = (Wrapped, fn) => {
   return (props) => {
@@ -18,9 +16,38 @@ const withRenderFn = (Wrapped, fn) => {
 
 const renderName = ({name}) => <span>{name}</span>;
 
-const PersonList = withData(withRenderFn(ItemList, renderName), getAllPeople);
-const StarshipList = withData(withRenderFn(ItemList, renderName), getAllStarships);
-const PlanetList = withData(withRenderFn(ItemList, renderName), getAllPlanets);
+const mapPersonMethodsToProps = (SwapiService) => {
+  return {
+    getData: SwapiService.getAllPeople
+  };
+};
+
+const mapStarshipMethodsToProps = (SwapiService) => {
+  return {
+    getData: SwapiService.getAllStarships
+  };
+};
+
+const mapPlanetsMethodsToProps = (SwapiService) => {
+  return {
+    getData: SwapiService.getAllPlanets
+  };
+};
+
+const PersonList = withSwapiService(
+  withData(withRenderFn(ItemList, renderName)),
+  mapPersonMethodsToProps
+);
+
+const StarshipList = withSwapiService(
+  withData(withRenderFn(ItemList, renderName)),
+  mapStarshipMethodsToProps
+);
+
+const PlanetList = withSwapiService(
+  withData(withRenderFn(ItemList, renderName)),
+  mapPlanetsMethodsToProps,
+);
 
 export {
   PersonList,
