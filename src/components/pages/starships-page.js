@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Route, withRouter } from 'react-router-dom';
 
 import {
   StarshipList,
@@ -6,24 +7,14 @@ import {
 } from '../sw-components';
 import Row from "../row/row";
 
-export default class extends Component {
-
-  state = {
-    selected: 5
-  }
-
-  onItemSelected = (id) => {
-    this.setState({
-      selected: id,
-    })
-  }
-
-  render() {
-    const { selected } = this.state;
-
-    return (
-      <Row left={  <StarshipList onItemSelected={this.onItemSelected} /> }
-        right={ <StarshipDetails itemId={selected} /> } />
-    )
-  }
+const StarshipsPage = ({ history }) => {
+  return (
+    <Row left={ <StarshipList onItemSelected={(id) => history.push(`/starships/${id}`)} /> }
+      right={ <Route path="/starships/:id" exact render={
+        ({ match: { params: { id } } }) => <StarshipDetails itemId={ id } />
+      } /> }
+    />
+  )
 }
+
+export default withRouter(StarshipsPage);
