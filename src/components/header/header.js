@@ -19,6 +19,12 @@ const Header = ({ changeService }) => {
         <li>
           <Link to="/starships/">Starships</Link>
         </li>
+        <li>
+          <Link to="/secrets">Secrets</Link>
+        </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
       </ul>
 
       <button type="button"

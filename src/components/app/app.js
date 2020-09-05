@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Header from '../header';
 import RandomPlanet from '../random-planet';
 import ErrorBoundry from '../error-boundry';
-import { StarshipsPage, PlanetsPage, PeoplePage } from '../pages';
+import { StarshipsPage, PlanetsPage, PeoplePage, LoginPage, SecretPage } from '../pages';
 import { SwapiServiceProvider } from '../swapi-service-context';
 import SwapiService from '../../services/swapi-service';
 import DummySwapiService from '../../services/dummy-swapi-service';
@@ -15,7 +15,14 @@ export default class App extends Component {
 
   state = {
     swapiService: new SwapiService(),
+    isLogged: false,
   };
+
+  onLogin = (isLogged) => {
+    this.setState({
+      isLogged,
+    })
+  }
 
   changeService = () => {
     this.setState(({ swapiService }) => {
@@ -30,6 +37,9 @@ export default class App extends Component {
   }
 
   render() {
+
+    const { isLogged } = this.state;
+
     return (
       <ErrorBoundry>
         <SwapiServiceProvider value={ this.state.swapiService } >
@@ -47,6 +57,8 @@ export default class App extends Component {
               <Route path="/starships/:id?" component={ StarshipsPage } />
               <Route path="/planets" render={() => <h1>Planets</h1>} />
               <Route path="/planets/:id?" component={ PlanetsPage } />
+              <Route path="/secrets" render={() => <SecretPage isLoggedIn={isLogged} />} />
+              <Route path="/login" render={() => <LoginPage isLoggedIn={isLogged} onLogin={this.onLogin} />} />
 
             </div>
           </Router>
