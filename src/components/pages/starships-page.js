@@ -9,7 +9,7 @@ import Row from "../row/row";
 
 const StarshipsPage = ({ history }) => {
   return (
-    <Row left={ <StarshipList onItemSelected={(id) => history.push(`/starships/${id}`)} /> }
+    <Row left={ <StarshipList onItemSelected={history.push} /> }
       right={ <Route path="/starships/:id" exact render={
         ({ match: { params: { id } } }) => <StarshipDetails itemId={ id } />
       } /> }
