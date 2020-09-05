@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import {
   StarshipList,
@@ -7,13 +7,12 @@ import {
 } from '../sw-components';
 import Row from "../row/row";
 
-const StarshipsPage = ({ history }) => {
+const StarshipsPage = ({ history, match }) => {
+
+  const { id } = match.params;
+
   return (
-    <Row left={ <StarshipList onItemSelected={history.push} /> }
-      right={ <Route path="/starships/:id" exact render={
-        ({ match: { params: { id } } }) => <StarshipDetails itemId={ id } />
-      } /> }
-    />
+    <Row left={ <StarshipList onItemSelected={ history.push } /> } right={ <StarshipDetails itemId={ id } /> } />
   )
 }
 

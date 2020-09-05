@@ -44,9 +44,9 @@ export default class App extends Component {
               <Route path="/people" render={() => <h1>People</h1>} />
               <Route path="/people" component={ PeoplePage } />
               <Route path="/starships" render={() => <h1>Starships</h1>} />
-              <Route path="/starships" component={ StarshipsPage } />
+              <Route path="/starships/:id?" component={ StarshipsPage } />
               <Route path="/planets" render={() => <h1>Planets</h1>} />
-              <Route path="/planets" component={ PlanetsPage } />
+              <Route path="/planets/:id?" component={ PlanetsPage } />
 
             </div>
           </Router>
