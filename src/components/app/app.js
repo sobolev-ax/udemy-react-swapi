@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Header from '../header';
 import RandomPlanet from '../random-planet';
@@ -49,16 +49,15 @@ export default class App extends Component {
 
               <RandomPlanet />
 
-              <Route path="/" exact render={() => <h1>Welcome to StarDB</h1>} />
-
-              <Route path="/people" render={() => <h1>People</h1>} />
-              <Route path="/people" component={ PeoplePage } />
-              <Route path="/starships" render={() => <h1>Starships</h1>} />
-              <Route path="/starships/:id?" component={ StarshipsPage } />
-              <Route path="/planets" render={() => <h1>Planets</h1>} />
-              <Route path="/planets/:id?" component={ PlanetsPage } />
-              <Route path="/secrets" render={() => <SecretPage isLoggedIn={isLogged} />} />
-              <Route path="/login" render={() => <LoginPage isLoggedIn={isLogged} onLogin={this.onLogin} />} />
+              <Switch>
+                <Route path="/" exact render={() => <h1>Welcome to StarDB</h1>} />
+                <Route path="/people" component={ PeoplePage } />
+                <Route path="/starships/:id?" component={ StarshipsPage } />
+                <Route path="/planets/:id?" component={ PlanetsPage } />
+                <Route path="/secrets" render={() => <SecretPage isLoggedIn={isLogged} />} />
+                <Route path="/login" render={() => <LoginPage isLoggedIn={isLogged} onLogin={this.onLogin} />} />
+                <Route render={() => <h2>Page not found :(</h2>} />
+              </Switch>
 
             </div>
           </Router>
